@@ -1,7 +1,10 @@
 # Pi
 import os
 import configparser
-import renko
+import logging
+import websocket
+import json
+import logging.handlers
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 os.chdir(cwd)
@@ -42,7 +45,60 @@ POSITION_PRICE = 0.0
 
 
 def main():
-    print(BRICK_SIZE)
+    global BINANCE_WEBSOCKET_ADDRESS
+
+    BINANCE_WEBSOCKET_ADDRESS = BINANCE_WEBSOCKET_ADDRESS.replace("symbol", str.lower(SYMBOL))
+
+    configure_logs()
+
+    init_stream()
+
+
+# Websocket functions
+def init_stream():
+    websocket.enableTrace(True)
+    w_s = websocket.WebSocketApp(
+        BINANCE_WEBSOCKET_ADDRESS,
+        on_message=on_message,
+        on_error=on_error,
+        on_close=on_close
+        )
+    w_s.on_open = on_open
+    w_s.run_forever()
+
+
+def on_error(w_s, error):
+    logging.error(error)
+
+
+def on_close(w_s):
+    logging.info("closing websocket connection, initiating again...")
+    init_stream()
+
+
+def on_open(w_s):
+    logging.info("websocket connection opened")
+
+
+def on_message(w_s, message):
+    ticker_data = json.loads(message)
+    ticker_price = float(ticker_data["c"])
+    print(ticker_price)
+
+
+# Preperation functions
+def configure_logs():
+    handler = logging.handlers.RotatingFileHandler(
+        cwd + "/logs/" + SYMBOL + "_pos_tracker.log",
+        maxBytes=10000000, backupCount=5)
+
+    formatter = logging.Formatter(
+        "%(asctime)s %(message)s", "%Y-%m-%d_%H:%M:%S")
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger()
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
 
 
 if __name__ == "__main__":
