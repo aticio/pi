@@ -5,6 +5,7 @@ import logging
 import websocket
 import json
 import logging.handlers
+from renko import Renko
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 os.chdir(cwd)
@@ -34,6 +35,9 @@ QUOTE = cp["data"]["Quote"]
 STEP_SIZE = int(cp["data"]["StepSize"])
 COMMISSION_FEE = float(cp["data"]["CommissionFee"])
 BRICK_SIZE = float(cp["data"]["BrickSize"])
+INITIAL_BRICK_OPEN = float(cp["data"]["InitialBrickOpen"])
+INITIAL_BRICK_CLOSE = float(cp["data"]["InitialBrickClose"])
+
 
 # Risk related variables
 POSITION_RISK = float(cp["risk"]["PositionRisk"])
@@ -43,6 +47,9 @@ IN_ORDER = False
 POS = 0
 POSITION_PRICE = 0.0
 
+# Creating empty renko object with giving empty list of price data
+RENKO = Renko(BRICK_SIZE, [])
+
 
 def main():
     global BINANCE_WEBSOCKET_ADDRESS
@@ -50,6 +57,9 @@ def main():
     BINANCE_WEBSOCKET_ADDRESS = BINANCE_WEBSOCKET_ADDRESS.replace("symbol", str.lower(SYMBOL))
 
     configure_logs()
+
+    RENKO.bricks.append({"type": "down", "open": INITIAL_BRICK_OPEN, "close": INITIAL_BRICK_CLOSE})
+    print(RENKO.bricks)
 
     init_stream()
 
@@ -83,7 +93,9 @@ def on_open(w_s):
 def on_message(w_s, message):
     ticker_data = json.loads(message)
     ticker_price = float(ticker_data["c"])
-    print(ticker_price)
+
+    RENKO.check_new_price(ticker_price)
+    print(RENKO.bricks)
 
 
 # Preperation functions
