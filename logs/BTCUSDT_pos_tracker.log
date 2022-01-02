@@ -214,3 +214,22 @@ Connection: Upgrade
 2022-01-02_15:32:24 Sec-WebSocket-Accept: aAAxBfhQe0QhVi1ULQKf2FD2cro=
 2022-01-02_15:32:24 -----------------------
 2022-01-02_15:32:24 websocket connection opened
+2022-01-02_15:47:32 --- request header ---
+2022-01-02_15:47:32 GET /ws/btcusdt@miniTicker HTTP/1.1
+Upgrade: websocket
+Host: stream.binance.com:9443
+Origin: http://stream.binance.com:9443
+Sec-WebSocket-Key: je+wemap8MdU8w39NUSRTg==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2022-01-02_15:47:32 -----------------------
+2022-01-02_15:47:32 --- response header ---
+2022-01-02_15:47:33 HTTP/1.1 101 Switching Protocols
+2022-01-02_15:47:33 Date: Sun, 02 Jan 2022 12:47:34 GMT
+2022-01-02_15:47:33 Connection: upgrade
+2022-01-02_15:47:33 Upgrade: websocket
+2022-01-02_15:47:33 Sec-WebSocket-Accept: dhx80AoB2g3jkj7BFkVBL/rbgxo=
+2022-01-02_15:47:33 -----------------------
+2022-01-02_15:47:33 websocket connection opened

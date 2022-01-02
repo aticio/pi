@@ -58,7 +58,7 @@ def main():
 
     configure_logs()
 
-    RENKO.bricks.append({"type": "down", "open": INITIAL_BRICK_OPEN, "close": INITIAL_BRICK_CLOSE})
+    RENKO.add_single_custom_brick("down", INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
     print(RENKO.bricks)
 
     init_stream()
