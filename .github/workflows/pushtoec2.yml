@@ -19,3 +19,15 @@ jobs:
           REMOTE_HOST: ${{ secrets.AWS_HOST }}
           REMOTE_USER: ${{ secrets.AWS_USER }}
           TARGET: "/opt/pi"
+      - name: start app
+        uses: appleboy/ssh-action@master
+        env:
+          TEST: ${{ secrets.BINANCE_API_KEY}}
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: 22
+            envs: TEST
+          script: |
+            sh appstart.sh
