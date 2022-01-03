@@ -71,8 +71,9 @@ def main():
     RENKO.add_single_custom_brick("down", INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
     print(RENKO.bricks)
     logging.info(API_KEY)
+    logging.info(SECRET)
 
-    # init_stream()
+    init_stream()
 
 
 # Websocket functions
