@@ -70,7 +70,7 @@ def main():
 
     RENKO.add_single_custom_brick("down", INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
     print(RENKO.bricks)
-    print(API_KEY)
+    logging.info(API_KEY)
 
     # init_stream()
 
