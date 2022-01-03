@@ -34,8 +34,8 @@ MARGIN_REPAY_PATH = cp["context"]["MarginRepayPath"]
 MARGIN_MAX_BORROWABLE_PATH = cp["context"]["MarginMaxBorrowablePath"]
 
 # Auth
-SECRET = "${{ secrets.BINANCE_API_SECRET }}"
-API_KEY = "${{ secrets.BINANCE_API_KEY }}"
+SECRET = ${{ secrets.BINANCE_API_SECRET }}
+API_KEY = ${{ secrets.BINANCE_API_KEY }}
 
 # Market related variables
 INTERVAL = cp["data"]["Interval"]
