@@ -28,6 +28,6 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
-            envs: TEST
+            env: TEST
           script: |
             sh appstart.sh
