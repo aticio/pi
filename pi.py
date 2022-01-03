@@ -11,6 +11,7 @@ from urllib.parse import urlencode
 import hmac
 import hashlib
 import requests
+import sqlite3 as sl
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 os.chdir(cwd)
@@ -18,6 +19,10 @@ os.chdir(cwd)
 # Configparser init
 cp = configparser.ConfigParser()
 cp.read(cwd + "/config.ini")
+
+# DB Connection
+DB_PATH = cp["db"]["DbPath"]
+con = sl.connect(cwd + "/" + DB_PATH)
 
 # Context info
 BINANCE_URL = cp["context"]["BinanceUrl"]
@@ -67,11 +72,14 @@ def main():
     BINANCE_WEBSOCKET_ADDRESS = BINANCE_WEBSOCKET_ADDRESS.replace("symbol", str.lower(SYMBOL))
 
     configure_logs()
+    prepare_db()
+    check_position()
+    previous_brick = check_bricks()
 
-    RENKO.add_single_custom_brick("down", INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
-    print(RENKO.bricks)
-    logging.info(API_KEY)
-    logging.info(SECRET)
+    if previous_brick is None:
+        RENKO.add_single_custom_brick("down", INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
+    else:
+        RENKO.add_single_custom_brick(previous_brick, previous_brick[1], previous_brick[2])
 
     init_stream()
 
@@ -120,6 +128,14 @@ def on_message(w_s, message):
             exit_short()
             enter_long(RENKO.bricks[-1])
 
+    if POS == 0 and IN_ORDER is False and len(RENKO.bricks) > 1:
+        if RENKO.bricks[-1]["type"] != RENKO.bricks[-2]["type"]:
+            if RENKO.bricks[-1]["type"] == "up":
+                enter_long(RENKO.bricks[-1])
+
+            if RENKO.bricks[-1]["type"] == "down":
+                enter_short(RENKO.bricks[-1])
+
 
 # Preperation functions
 def configure_logs():
@@ -134,6 +150,50 @@ def configure_logs():
     logger = logging.getLogger()
     logger.addHandler(handler)
     logger.setLevel(logging.INFO)
+
+
+def prepare_db():
+    con.execute("""
+        CREATE TABLE IF NOT EXISTS POSITIONS (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            pos INT
+        );
+    """)
+
+    con.execute("""
+        CREATE TABLE IF NOT EXISTS BRICKS (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            type TEXT,
+            open REAL,
+            close REAL
+        );
+    """)
+
+
+def check_position():
+    """Checking if there is an open position for this particular symbol
+    """
+    global POS
+
+    data = con.execute("SELECT * FROM POSITIONS;")
+    position = data.fetchone()
+
+    if position is not None:
+        POS = position[1]
+
+
+def check_bricks():
+    """Checking if there are any older bricks
+    """
+    global POS
+
+    data = con.execute("SELECT * FROM BRICKS ORDER BY ID DESC")
+    brick = data.fetchone()
+
+    if brick is not None:
+        return (brick[0], brick[1], brick[2])
+    else:
+        return None
 
 
 # Position related functions

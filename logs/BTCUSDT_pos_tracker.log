@@ -252,3 +252,161 @@ Connection: Upgrade
 2022-01-03_10:32:31 Sec-WebSocket-Accept: wsTXboVs7Q6OtjxDQ9Rs7t7yZFY=
 2022-01-03_10:32:31 -----------------------
 2022-01-03_10:32:31 websocket connection opened
+2022-01-04_00:56:46 --- request header ---
+2022-01-04_00:56:46 GET /ws/btcusdt@miniTicker HTTP/1.1
+Upgrade: websocket
+Host: stream.binance.com:9443
+Origin: http://stream.binance.com:9443
+Sec-WebSocket-Key: aEEP48eYu4ZZoS5gvYodkQ==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2022-01-04_00:56:46 -----------------------
+2022-01-04_00:56:46 --- response header ---
+2022-01-04_00:56:46 HTTP/1.1 101 Switching Protocols
+2022-01-04_00:56:46 Date: Mon, 03 Jan 2022 21:56:48 GMT
+2022-01-04_00:56:46 Connection: upgrade
+2022-01-04_00:56:46 Upgrade: websocket
+2022-01-04_00:56:46 Sec-WebSocket-Accept: 84oOpinamUxvkmYal/oalTIHn3s=
+2022-01-04_00:56:46 -----------------------
+2022-01-04_00:56:46 websocket connection opened
+2022-01-04_00:56:47 error from callback <function on_message at 0x000001D2792F7828>: list index out of range
+2022-01-04_00:56:48 error from callback <function on_message at 0x000001D2792F7828>: list index out of range
+2022-01-04_00:56:49 error from callback <function on_message at 0x000001D2792F7828>: list index out of range
+2022-01-04_00:56:50 
+2022-01-04_00:56:50 send: b'\x88\x823\xc1\x96\xab0)'
+2022-01-04_00:56:51 closing websocket connection, initiating again...
+2022-01-04_00:56:52 --- request header ---
+2022-01-04_00:56:52 GET /ws/btcusdt@miniTicker HTTP/1.1
+Upgrade: websocket
+Host: stream.binance.com:9443
+Origin: http://stream.binance.com:9443
+Sec-WebSocket-Key: uTGDPK58HFeBDAnGRYVN/A==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2022-01-04_00:56:52 -----------------------
+2022-01-04_00:56:52 --- response header ---
+2022-01-04_00:56:52 HTTP/1.1 101 Switching Protocols
+2022-01-04_00:56:52 Date: Mon, 03 Jan 2022 21:56:53 GMT
+2022-01-04_00:56:52 Connection: upgrade
+2022-01-04_00:56:52 Upgrade: websocket
+2022-01-04_00:56:52 Sec-WebSocket-Accept: pasYeqKNNq++h8UUiN7Tnjj3CuM=
+2022-01-04_00:56:52 -----------------------
+2022-01-04_00:56:52 websocket connection opened
+2022-01-04_00:56:52 error from callback <function on_message at 0x000001D2792F7828>: list index out of range
+2022-01-04_00:56:53 error from callback <function on_message at 0x000001D2792F7828>: list index out of range
+2022-01-04_00:57:06 --- request header ---
+2022-01-04_00:57:06 GET /ws/btcusdt@miniTicker HTTP/1.1
+Upgrade: websocket
+Host: stream.binance.com:9443
+Origin: http://stream.binance.com:9443
+Sec-WebSocket-Key: oZV9YMxHqpLpILJQHrdkZg==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2022-01-04_00:57:06 -----------------------
+2022-01-04_00:57:06 --- response header ---
+2022-01-04_00:57:06 HTTP/1.1 101 Switching Protocols
+2022-01-04_00:57:06 Date: Mon, 03 Jan 2022 21:57:08 GMT
+2022-01-04_00:57:06 Connection: upgrade
+2022-01-04_00:57:07 Upgrade: websocket
+2022-01-04_00:57:07 Sec-WebSocket-Accept: fUH3I7WB4EI5qJVB0KgYvdIwp/c=
+2022-01-04_00:57:07 -----------------------
+2022-01-04_00:57:07 websocket connection opened
+2022-01-04_00:57:07 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:08 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:09 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:10 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:12 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:13 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:14 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:15 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:16 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:17 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:18 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:19 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:20 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:21 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:22 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:23 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:24 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:25 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:26 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:57:27 error from callback <function on_message at 0x000001D42E1E7828>: list index out of range
+2022-01-04_00:58:40 --- request header ---
+2022-01-04_00:58:40 GET /ws/btcusdt@miniTicker HTTP/1.1
+Upgrade: websocket
+Host: stream.binance.com:9443
+Origin: http://stream.binance.com:9443
+Sec-WebSocket-Key: TeTc2+scJNFOWCgu0+FIsA==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2022-01-04_00:58:40 -----------------------
+2022-01-04_00:58:40 --- response header ---
+2022-01-04_00:58:40 HTTP/1.1 101 Switching Protocols
+2022-01-04_00:58:40 Date: Mon, 03 Jan 2022 21:58:42 GMT
+2022-01-04_00:58:40 Connection: upgrade
+2022-01-04_00:58:40 Upgrade: websocket
+2022-01-04_00:58:40 Sec-WebSocket-Accept: Wv8PP7gAHGyTEGMG7MFJIYXgDqA=
+2022-01-04_00:58:40 -----------------------
+2022-01-04_00:58:40 websocket connection opened
+2022-01-04_00:58:41 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:42 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:43 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:43 send: b'\x8a\x8dH\xee\xd1Ny\xd8\xe5\x7fz\xda\xe6\x7fz\xda\xe6}}'
+2022-01-04_00:58:44 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:45 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:46 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:47 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:48 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:49 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:50 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:51 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:52 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:53 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:54 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:55 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:56 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:57 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:58 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:58:59 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:00 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:01 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:02 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:03 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:04 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:05 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:06 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:07 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:08 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:09 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:10 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:11 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:12 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:13 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:14 error from callback <function on_message at 0x00000230F5646798>: 'Renko' object has no attribute 'bircks'
+2022-01-04_00:59:22 --- request header ---
+2022-01-04_00:59:22 GET /ws/btcusdt@miniTicker HTTP/1.1
+Upgrade: websocket
+Host: stream.binance.com:9443
+Origin: http://stream.binance.com:9443
+Sec-WebSocket-Key: QuEMdUJo4p7/Dfj6RF+HDA==
+Sec-WebSocket-Version: 13
+Connection: Upgrade
+
+
+2022-01-04_00:59:22 -----------------------
+2022-01-04_00:59:22 --- response header ---
+2022-01-04_00:59:22 HTTP/1.1 101 Switching Protocols
+2022-01-04_00:59:22 Date: Mon, 03 Jan 2022 21:59:24 GMT
+2022-01-04_00:59:22 Connection: upgrade
+2022-01-04_00:59:22 Upgrade: websocket
+2022-01-04_00:59:22 Sec-WebSocket-Accept: RSiyI8+1tM9JGzUag7pTaIi13wk=
+2022-01-04_00:59:22 -----------------------
+2022-01-04_00:59:22 websocket connection opened
