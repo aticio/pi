@@ -30,4 +30,4 @@ jobs:
           port: 22
           envs: TEST
           script: |
-            sh appstart.sh
+            sh /opt/pi/appstart.sh
