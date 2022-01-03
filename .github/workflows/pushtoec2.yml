@@ -21,13 +21,10 @@ jobs:
           TARGET: "/opt/pi"
       - name: start app
         uses: appleboy/ssh-action@master
-        env:
-          TEST: ${{ secrets.BINANCE_API_KEY}}
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
-          envs: TEST
           script: |
-            sh /opt/pi/appstart.sh
+            sh /opt/pi/appstart.sh ${{ secrets.BINANCE_API_KEY}}

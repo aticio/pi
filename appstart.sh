@@ -1,1 +1,2 @@
-touch $TEST
+#!/bin/bash
+touch $1 
