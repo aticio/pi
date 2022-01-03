@@ -34,8 +34,8 @@ MARGIN_REPAY_PATH = cp["context"]["MarginRepayPath"]
 MARGIN_MAX_BORROWABLE_PATH = cp["context"]["MarginMaxBorrowablePath"]
 
 # Auth
-SECRET = ${{ secrets.BINANCE_API_SECRET }}
-API_KEY = ${{ secrets.BINANCE_API_KEY }}
+API_KEY = os.getenv("BINANCE_API_KEY")
+SECRET = os.getenv("BINANCE_API_SECRET")
 
 # Market related variables
 INTERVAL = cp["data"]["Interval"]
@@ -70,8 +70,9 @@ def main():
 
     RENKO.add_single_custom_brick("down", INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
     print(RENKO.bricks)
+    print(API_KEY)
 
-    init_stream()
+    # init_stream()
 
 
 # Websocket functions
