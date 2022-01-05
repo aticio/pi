@@ -60,7 +60,7 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 # Other functional globals
 IN_ORDER = False
 POS = 0
-POSITION_PRICE = 0.0
+NUMBER_OF_BRICKS = 0
 
 # Creating empty renko object with giving empty list of price data
 RENKO = Renko(BRICK_SIZE, [])
@@ -68,6 +68,7 @@ RENKO = Renko(BRICK_SIZE, [])
 
 def main():
     global BINANCE_WEBSOCKET_ADDRESS
+    global NUMBER_OF_BRICKS
 
     BINANCE_WEBSOCKET_ADDRESS = BINANCE_WEBSOCKET_ADDRESS.replace("symbol", str.lower(SYMBOL))
 
@@ -80,6 +81,8 @@ def main():
         RENKO.add_single_custom_brick("down", INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
     else:
         RENKO.add_single_custom_brick(previous_brick, previous_brick[1], previous_brick[2])
+
+    NUMBER_OF_BRICKS = len(RENKO.bricks)
 
     init_stream()
 
@@ -112,11 +115,20 @@ def on_open(w_s):
 
 def on_message(w_s, message):
     global POS
+    global NUMBER_OF_BRICKS
 
     ticker_data = json.loads(message)
     ticker_price = float(ticker_data["c"])
 
     RENKO.check_new_price(ticker_price)
+    logging.info("---")
+    logging.info(POS)
+    for b in RENKO.bricks[-5:]:
+        logging.info(b)
+
+    if NUMBER_OF_BRICKS != len(RENKO.bricks):
+        NUMBER_OF_BRICKS = len(RENKO.bricks)
+        save_new_brick(RENKO.bricks[-1])
 
     if POS == 1 and IN_ORDER is False:
         if RENKO.bricks[-1]["type"] == "down":
@@ -179,7 +191,7 @@ def check_position():
     position = data.fetchone()
 
     if position is not None:
-        POS = position[1]
+        POS = int(position[1])
 
 
 def check_bricks():
@@ -194,6 +206,19 @@ def check_bricks():
         return (brick[0], brick[1], brick[2])
     else:
         return None
+
+
+def save_new_brick(brick):
+    print(brick)
+    sql = (
+        "INSERT INTO BRICKS "
+        "(type, open, close) "
+        "VALUES ('" + brick["type"] + "',"
+        " " + str(brick["open"]) + ","
+        " " + str(brick["close"]) + ");")
+
+    with con:
+        con.execute(sql)
 
 
 # Position related functions
