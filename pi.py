@@ -50,7 +50,7 @@ QUOTE = cp["data"]["Quote"]
 STEP_SIZE = int(cp["data"]["StepSize"])
 COMMISSION_FEE = float(cp["data"]["CommissionFee"])
 BRICK_SIZE = float(cp["data"]["BrickSize"])
-INITIAL_BRICK_TYPE = float(cp["data"]["InitialBrickType"])
+INITIAL_BRICK_TYPE = str(cp["data"]["InitialBrickType"])
 INITIAL_BRICK_OPEN = float(cp["data"]["InitialBrickOpen"])
 INITIAL_BRICK_CLOSE = float(cp["data"]["InitialBrickClose"])
 
