@@ -84,7 +84,6 @@ def main():
         RENKO.add_single_custom_brick(previous_brick, previous_brick[1], previous_brick[2])
 
     NUMBER_OF_BRICKS = len(RENKO.bricks)
-
     init_stream()
 
 
@@ -134,20 +133,26 @@ def on_message(w_s, message):
     if POS == 1 and IN_ORDER is False:
         if RENKO.bricks[-1]["type"] == "down":
             exit_long()
+            delete_pos()
             enter_short(RENKO.bricks[-1])
+            add_position()
 
     if POS == -1 and IN_ORDER is False:
         if RENKO.bricks[-1]["type"] == "up":
             exit_short()
+            delete_pos()
             enter_long(RENKO.bricks[-1])
+            add_position()
 
     if POS == 0 and IN_ORDER is False and len(RENKO.bricks) > 1:
         if RENKO.bricks[-1]["type"] != RENKO.bricks[-2]["type"]:
             if RENKO.bricks[-1]["type"] == "up":
                 enter_long(RENKO.bricks[-1])
+                add_position()
 
             if RENKO.bricks[-1]["type"] == "down":
                 enter_short(RENKO.bricks[-1])
+                add_position()
 
 
 # Preperation functions
@@ -193,6 +198,25 @@ def check_position():
 
     if position is not None:
         POS = int(position[1])
+
+
+def add_position():
+    sql = (
+        "INSERT INTO POSITIONS "
+        "(pos) "
+        "VALUES (" + str(POS) + ");")
+
+    with con:
+        con.execute(sql)
+
+
+def delete_pos():
+    global SYMBOL
+
+    sql = "DELETE FROM POSITIONS;"
+
+    with con:
+        con.execute(sql)
 
 
 def check_bricks():
