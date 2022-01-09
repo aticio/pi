@@ -60,7 +60,7 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = 0
+POS = 1
 NUMBER_OF_BRICKS = 0
 
 # Creating empty renko object with giving empty list of price data
@@ -123,6 +123,7 @@ def on_message(w_s, message):
     RENKO.check_new_price(ticker_price)
     logging.info("---")
     logging.info(POS)
+    logging.info(ticker_price)
     for b in RENKO.bricks[-5:]:
         logging.info(b)
 
@@ -249,72 +250,37 @@ def save_new_brick(brick):
 # Position related functions
 def enter_long(brick):
     global POS
-    global POSITION_PRICE
     global IN_ORDER
 
     IN_ORDER = True
 
     logging.info("Opening long position.")
 
-    balance = get_margin_balance(QUOTE, SYMBOL, "quoteAsset")
-    logging.info(f"Quote balance: {balance} {QUOTE}")
+    logging.info("Getting spot account balance")
+    balance = get_spot_balance(QUOTE)
 
     if not balance:
         return
 
+    logging.info(f"Quote balance: {balance} {QUOTE}")
+
     share = (balance * POSITION_RISK) / (BRICK_SIZE * 2)
-    share = algoutils.truncate_ceil(share, STEP_SIZE)
-    logging.info(f"Calculated share: {share} {BASE}")
 
-    max_borrowable_response = get_max_borrowable(QUOTE, SYMBOL)
-    if not max_borrowable_response:
-        return
-
-    if (share * brick["close"]) - float(balance) > float(max_borrowable_response["amount"]):
-        logging.info("Exceeding maximum borrowable limit.")
-        logging.info(max_borrowable_response)
-        max_borrowable = max_borrowable_response["amount"]
-        amount_to_borrow = float(max_borrowable)
-    elif (share * brick["close"]) - float(balance) < 0:
-        amount_to_borrow = (share * brick["close"])
+    if share * brick["close"] > balance:
+        order_amount = balance
     else:
-        amount_to_borrow = (share * brick["close"]) - float(balance)
+        order_amount = share * brick["close"]
 
-    amount_to_borrow = algoutils.truncate_ceil(amount_to_borrow, 8)
-    logging.info(f"Amount to borrow for quote: {amount_to_borrow} {QUOTE}")
-
-    total_balance = algoutils.truncate_floor(amount_to_borrow + balance, 8)
-    logging.info(f"Total quote balance for position: {total_balance} {QUOTE}")
-
-    logging.info(f"Borrowing {QUOTE}")
-    margin_borrow_response = margin_borrow(
-        QUOTE,
-        "TRUE",
+    order_response = spot_order_quote(
         SYMBOL,
-        amount_to_borrow)
-
-    if not margin_borrow_response:
-        return
-
-    logging.info("Triggering buy order")
-    margin_order_response = margin_order_quote(
-        SYMBOL,
-        "TRUE",
         "BUY",
         "MARKET",
-        total_balance)
+        algoutils.truncate_ceil(order_amount, 6))
 
-    logging.info(json.dumps(margin_order_response, sort_keys=True, indent=4))
-
-    if not margin_order_response:
+    if not order_response:
         return
 
-    pos_share = float(margin_order_response["executedQty"]) - (float(margin_order_response["executedQty"]) * 0.001)
-    logging.info(f"Base balance after margin buy (bought - commission): {pos_share} {BASE}")
-
     POS = 1
-    POSITION_PRICE = brick["close"]
-
     IN_ORDER = False
 
 
@@ -392,57 +358,29 @@ def enter_short(brick):
 def exit_long():
     global POS
     global IN_ORDER
-    global POS_SHARE
 
     IN_ORDER = True
 
     logging.info("Closing long position.")
 
-    balance = get_margin_balance(BASE, SYMBOL, "baseAsset")
-    logging.info(f"Base balance: {balance} {BASE}")
+    # Not over blance
+    logging.info("Getting spot account balance")
+    balance = get_spot_balance(BASE)
+
+    if not balance:
+        return
 
     amount_to_sell = algoutils.truncate_floor(balance, STEP_SIZE)
-
     if STEP_SIZE == 0:
         amount_to_sell = int(amount_to_sell)
+    logging.info("Amount to sell %f %s", amount_to_sell, BASE)
 
-    logging.info(f"Amount to sell: {amount_to_sell} {BASE}")
-    logging.info("Triggering sell order.")
+    spot_order_response = spot_order(SYMBOL, "SELL", "MARKET", amount_to_sell)
 
-    margin_order_response = margin_order(
-        SYMBOL,
-        "TRUE",
-        "SELL",
-        "MARKET",
-        amount_to_sell)
-
-    if not margin_order_response:
-        IN_ORDER = False
+    if not spot_order_response:
         return
 
-    logging.info(json.dumps(margin_order_response, sort_keys=True, indent=4))
-
-    margin_quote_debt = get_margin_debt(QUOTE, SYMBOL, "quoteAsset")
-    if not margin_quote_debt:
-        IN_ORDER = False
-        return
-
-    logging.info(f"Margin quote debt: {margin_quote_debt} {QUOTE}")
-    logging.info("Repaying debt")
-
-    margin_repay_amount = margin_quote_debt
-
-    margin_repay_response = margin_repay(
-        QUOTE,
-        "TRUE",
-        SYMBOL,
-        margin_repay_amount)
-
-    if not margin_repay_response:
-        IN_ORDER = False
-        return
-
-    logging.info("Debt has been repaid")
+    logging.info("Sell order has been filled")
 
     POS = 0
     IN_ORDER = False
