@@ -286,22 +286,18 @@ def enter_long(brick):
 
 def enter_short(brick):
     global POS
-    global POSITION_PRICE
     global IN_ORDER
 
     IN_ORDER = True
 
     logging.info("Opening short position.")
 
-    balance = get_margin_balance(QUOTE, SYMBOL, "quoteAsset")
-    logging.info(f"Quote balance: {balance} {QUOTE}")
-
+    logging.info("Getting spot balance")
+    balance = get_spot_balance(QUOTE)
     if not balance:
         return
 
-    share = (balance * POSITION_RISK) / (BRICK_SIZE * 2)
-    share = algoutils.truncate_ceil(share, STEP_SIZE)
-    logging.info(f"Calculated share: {share} {BASE}")
+    logging.info(f"Quote balance: {balance} {QUOTE}")
 
     amount_to_transfer = algoutils.truncate_floor(balance, 8)
     logging.info("amount to transfer %f", amount_to_transfer)
@@ -316,6 +312,10 @@ def enter_short(brick):
 
     if not transfer_response:
         return
+
+    share = (balance * POSITION_RISK) / (BRICK_SIZE * 2)
+    share = algoutils.truncate_ceil(share, STEP_SIZE)
+    logging.info(f"Calculated share: {share} {BASE}")
 
     max_borrowable_response = get_max_borrowable(BASE, SYMBOL)
     if not max_borrowable_response:
@@ -350,7 +350,6 @@ def enter_short(brick):
     logging.info(json.dumps(margin_order_response, sort_keys=True, indent=4))
 
     POS = -1
-    POSITION_PRICE = brick["close"]
 
     IN_ORDER = False
 
