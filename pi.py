@@ -81,7 +81,7 @@ def main():
     if previous_brick is None:
         RENKO.add_single_custom_brick(INITIAL_BRICK_TYPE, INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
     else:
-        RENKO.add_single_custom_brick(previous_brick, previous_brick[1], previous_brick[2])
+        RENKO.add_single_custom_brick(previous_brick[0], previous_brick[1], previous_brick[2])
 
     NUMBER_OF_BRICKS = len(RENKO.bricks)
     init_stream()
