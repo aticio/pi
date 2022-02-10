@@ -110,7 +110,7 @@ def on_close(w_s):
 
 
 def on_open(w_s):
-    logging.info("websocket connection opened")
+    logging.info("websocket connection opened...")
 
 
 def on_message(w_s, message):
