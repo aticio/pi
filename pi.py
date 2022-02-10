@@ -60,7 +60,7 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = 1
+POS = 0
 NUMBER_OF_BRICKS = 0
 
 # Creating empty renko object with giving empty list of price data
