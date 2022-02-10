@@ -229,7 +229,7 @@ def check_bricks():
     brick = data.fetchone()
 
     if brick is not None:
-        return (brick[0], brick[1], brick[2])
+        return (brick[1], brick[2], brick[3])
     else:
         return None
 
