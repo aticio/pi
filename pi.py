@@ -12,6 +12,7 @@ import hmac
 import hashlib
 import requests
 import sqlite3 as sl
+import time
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 os.chdir(cwd)
@@ -60,7 +61,7 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = 1
+POS = 0
 NUMBER_OF_BRICKS = 0
 
 # Creating empty renko object with giving empty list of price data
@@ -313,6 +314,8 @@ def enter_short(brick):
     if not transfer_response:
         return
 
+    time.sleep(1)
+
     share = (balance * POSITION_RISK) / (BRICK_SIZE * 2)
     share = algoutils.truncate_ceil(share, STEP_SIZE)
     logging.info(f"Calculated share: {share} {BASE}")
@@ -335,6 +338,8 @@ def enter_short(brick):
 
     if not margin_borrow_response:
         return
+
+    time.sleep(1)
 
     logging.info("Triggering order")
     margin_order_response = margin_order(
@@ -414,6 +419,8 @@ def exit_short():
     logging.info(json.dumps(margin_order_response, sort_keys=True, indent=4))
     logging.info("Order has been filled")
 
+    time.sleep(1)
+
     margin_base_free_balance = get_margin_free_balance(
         BASE, SYMBOL, "baseAsset")
 
@@ -431,6 +438,8 @@ def exit_short():
 
     logging.info("Debt has been repaid")
     logging.info("Getting margin account quote balance")
+
+    time.sleep(1)
 
     margin_quote_balance = get_margin_balance(QUOTE, SYMBOL, "quoteAsset")
 
