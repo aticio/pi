@@ -6,6 +6,7 @@ import websocket
 import json
 import logging.handlers
 from renko import Renko
+from legitindicators import atr
 import algoutils
 from urllib.parse import urlencode
 import hmac
@@ -54,6 +55,7 @@ BRICK_SIZE = float(cp["data"]["BrickSize"])
 INITIAL_BRICK_TYPE = str(cp["data"]["InitialBrickType"])
 INITIAL_BRICK_OPEN = float(cp["data"]["InitialBrickOpen"])
 INITIAL_BRICK_CLOSE = float(cp["data"]["InitialBrickClose"])
+ATR_ENTRY_LIMIT = int(cp["data"]["ATREntryLimit"])
 
 
 # Risk related variables
@@ -61,8 +63,9 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = 0
+POS = 1
 NUMBER_OF_BRICKS = 0
+TMP_BRICK = ""
 
 # Creating empty renko object with giving empty list of price data
 RENKO = Renko(BRICK_SIZE, [])
@@ -117,6 +120,7 @@ def on_open(w_s):
 def on_message(w_s, message):
     global POS
     global NUMBER_OF_BRICKS
+    global TMP_BRICK
 
     ticker_data = json.loads(message)
     ticker_price = float(ticker_data["c"])
@@ -136,25 +140,45 @@ def on_message(w_s, message):
         if RENKO.bricks[-1]["type"] == "down":
             exit_long()
             delete_pos()
-            enter_short(RENKO.bricks[-1])
-            add_position()
+            enter_pos = check_entry()
+            if enter_pos:
+                enter_short(RENKO.bricks[-1])
+                add_position()
+            else:
+                POS = 0
+                return
 
     if POS == -1 and IN_ORDER is False:
         if RENKO.bricks[-1]["type"] == "up":
             exit_short()
             delete_pos()
-            enter_long(RENKO.bricks[-1])
-            add_position()
+            enter_pos = check_entry()
+            if enter_pos:
+                enter_long(RENKO.bricks[-1])
+                add_position()
+            else:
+                POS = 0
+                return
 
     if POS == 0 and IN_ORDER is False and len(RENKO.bricks) > 1:
         if RENKO.bricks[-1]["type"] != RENKO.bricks[-2]["type"]:
-            if RENKO.bricks[-1]["type"] == "up":
-                enter_long(RENKO.bricks[-1])
-                add_position()
+            if RENKO.bricks[-1]["type"] == "up" and TMP_BRICK != "up":
+                enter_pos = check_entry()
+                if enter_pos:
+                    enter_long(RENKO.bricks[-1])
+                    TMP_BRICK = ""
+                    add_position()
+                else:
+                    TMP_BRICK = "up"
 
-            if RENKO.bricks[-1]["type"] == "down":
-                enter_short(RENKO.bricks[-1])
-                add_position()
+            if RENKO.bricks[-1]["type"] == "down" and TMP_BRICK != "down":
+                enter_pos = check_entry()
+                if enter_pos:
+                    enter_short(RENKO.bricks[-1])
+                    TMP_BRICK = ""
+                    add_position()
+                else:
+                    TMP_BRICK = "down"
 
 
 # Preperation functions
@@ -200,6 +224,44 @@ def check_position():
 
     if position is not None:
         POS = int(position[1])
+
+
+def get_kline_limit(kline_symbol, kline_interval, kline_limit):
+    params = {
+        "symbol": kline_symbol,
+        "interval": kline_interval,
+        "limit": kline_limit}
+    try:
+        response = requests.get(
+            url=f"{BINANCE_URL}{KLINE_PATH}", params=params)
+        response.raise_for_status()
+        kline = response.json()
+        kline = kline[:-1]
+        return kline
+    except requests.exceptions.RequestException as err:
+        logging.error(err)
+        return None
+
+
+def get_ohlc(kline):
+    opn = [float(o[1]) for o in kline]
+    close = [float(c[4]) for c in kline]
+    high = [float(h[2]) for h in kline]
+    low = [float(lo[3]) for lo in kline]
+
+    return opn, high, low, close
+
+
+def check_entry(close):
+    kline = get_kline_limit(SYMBOL, INTERVAL, 100)
+    _, _, _, close = get_ohlc(kline)
+    enter_pos = check_entry(close)
+
+    atrng = atr(close, 14)
+    if atrng[-1] < ATR_ENTRY_LIMIT:
+        return True
+    else:
+        return False
 
 
 def add_position():
