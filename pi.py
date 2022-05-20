@@ -63,7 +63,7 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = 1
+POS = 0
 NUMBER_OF_BRICKS = 0
 TMP_BRICK = ""
 
@@ -252,7 +252,7 @@ def get_ohlc(kline):
     return opn, high, low, close
 
 
-def check_entry(close):
+def check_entry():
     kline = get_kline_limit(SYMBOL, INTERVAL, 100)
     _, _, _, close = get_ohlc(kline)
     enter_pos = check_entry(close)
