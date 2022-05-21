@@ -253,14 +253,18 @@ def get_ohlc(kline):
 
 
 def check_entry():
+    logging.info("Checking atr...")
     kline = get_kline_limit(SYMBOL, INTERVAL, 100)
     _, _, _, close = get_ohlc(kline)
     enter_pos = check_entry(close)
 
     atrng = atr(close, 14)
+    logging.info(atrng[-1])
     if atrng[-1] < ATR_ENTRY_LIMIT:
+        logging.info("Position available")
         return True
     else:
+        logging.info("Position unavailable")
         return False
 
 
