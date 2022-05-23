@@ -63,9 +63,9 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = 0
+POS = 1
 NUMBER_OF_BRICKS = 0
-TMP_BRICK = ""
+TMP_BRICK = "up"
 
 # Creating empty renko object with giving empty list of price data
 RENKO = Renko(BRICK_SIZE, [])
@@ -256,7 +256,6 @@ def check_entry():
     logging.info("Checking atr...")
     kline = get_kline_limit(SYMBOL, INTERVAL, 100)
     _, _, _, close = get_ohlc(kline)
-    enter_pos = check_entry(close)
 
     atrng = atr(close, 14)
     logging.info(atrng[-1])
