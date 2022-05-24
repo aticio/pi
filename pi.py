@@ -55,7 +55,7 @@ BRICK_SIZE = float(cp["data"]["BrickSize"])
 INITIAL_BRICK_TYPE = str(cp["data"]["InitialBrickType"])
 INITIAL_BRICK_OPEN = float(cp["data"]["InitialBrickOpen"])
 INITIAL_BRICK_CLOSE = float(cp["data"]["InitialBrickClose"])
-ATR_ENTRY_LIMIT = int(cp["data"]["ATREntryLimit"])
+ATR_ENTRY_LIMIT = float(cp["data"]["ATREntryLimit"])
 
 
 # Risk related variables
@@ -63,9 +63,9 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = 1
+POS = -1
 NUMBER_OF_BRICKS = 0
-TMP_BRICK = "up"
+TMP_BRICK = "down"
 
 # Creating empty renko object with giving empty list of price data
 RENKO = Renko(BRICK_SIZE, [])
@@ -254,11 +254,15 @@ def get_ohlc(kline):
 
 def check_entry():
     logging.info("Checking atr...")
+    logging.info("Getting kline data")
     kline = get_kline_limit(SYMBOL, INTERVAL, 100)
     _, _, _, close = get_ohlc(kline)
 
+    logging.info("Calculating atr")
     atrng = atr(close, 14)
     logging.info(atrng[-1])
+
+
     if atrng[-1] < ATR_ENTRY_LIMIT:
         logging.info("Position available")
         return True
