@@ -63,9 +63,9 @@ POSITION_RISK = float(cp["risk"]["PositionRisk"])
 
 # Other functional globals
 IN_ORDER = False
-POS = -1
+POS = 1
 NUMBER_OF_BRICKS = 0
-TMP_BRICK = "down"
+TMP_BRICK = "up"
 
 # Creating empty renko object with giving empty list of price data
 RENKO = Renko(BRICK_SIZE, [])
@@ -256,12 +256,12 @@ def check_entry():
     logging.info("Checking atr...")
     logging.info("Getting kline data")
     kline = get_kline_limit(SYMBOL, INTERVAL, 100)
-    _, _, _, close = get_ohlc(kline)
+    opn, high, low, close = get_ohlc(kline)
 
     logging.info("Calculating atr")
-    atrng = atr(close, 14)
+    atr_input = prepare_atr_input(kline, opn, high, low, close)
+    atrng = atr(atr_input, 14)
     logging.info(atrng[-1])
-
 
     if atrng[-1] < ATR_ENTRY_LIMIT:
         logging.info("Position available")
@@ -269,6 +269,15 @@ def check_entry():
     else:
         logging.info("Position unavailable")
         return False
+
+
+def prepare_atr_input(kline, opn, high, low, close):
+
+    atr_input = []
+    for i, _ in enumerate(kline):
+        ohlc = [opn[i], high[i], low[i], close[i]]
+        atr_input.append(ohlc)
+    return atr_input
 
 
 def add_position():
