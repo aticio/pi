@@ -71,6 +71,7 @@ RENKO = Renko(BRICK_SIZE, [])
 def main():
     global BINANCE_WEBSOCKET_ADDRESS
     global NUMBER_OF_BRICKS
+    global POS
 
     BINANCE_WEBSOCKET_ADDRESS = BINANCE_WEBSOCKET_ADDRESS.replace("symbol", str.lower(SYMBOL))
 
@@ -81,6 +82,12 @@ def main():
 
     if previous_brick is None:
         RENKO.add_single_custom_brick(INITIAL_BRICK_TYPE, INITIAL_BRICK_OPEN, INITIAL_BRICK_CLOSE)
+        if INITIAL_BRICK_TYPE == "up":
+            POS = 1
+        elif INITIAL_BRICK_TYPE == "down":
+            POS = -1
+        else:
+            POS = 0
     else:
         RENKO.add_single_custom_brick(previous_brick[0], previous_brick[1], previous_brick[2])
 
