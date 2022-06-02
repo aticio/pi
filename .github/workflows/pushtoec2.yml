@@ -27,4 +27,4 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
           script: |
-            sh /opt/pi/appstart.sh ${{ secrets.BINANCE_API_KEY}} ${{ secrets.BINANCE_API_SECRET}} continue
+            sh /opt/pi/appstart.sh ${{ secrets.BINANCE_API_KEY}} ${{ secrets.BINANCE_API_SECRET}} recreate
