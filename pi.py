@@ -274,16 +274,11 @@ def enter_long(brick):
 
     share = (balance * POSITION_RISK) / (BRICK_SIZE * 2)
 
-    if share * brick["close"] > balance:
-        order_amount = balance
-    else:
-        order_amount = share * brick["close"]
-
     order_response = spot_order_quote(
         SYMBOL,
         "BUY",
         "MARKET",
-        algoutils.truncate_ceil(order_amount, 6))
+        algoutils.truncate_floor(balance, 6))
 
     if not order_response:
         return
@@ -323,8 +318,8 @@ def enter_short(brick):
 
     time.sleep(1)
 
-    share = (balance * POSITION_RISK) / (BRICK_SIZE * 2)
-    share = algoutils.truncate_ceil(share, STEP_SIZE)
+    share = balance * brick["close"]
+    share = algoutils.truncate_floor(share, STEP_SIZE)
     logging.info(f"Calculated share: {share} {BASE}")
 
     max_borrowable_response = get_max_borrowable(BASE, SYMBOL)
