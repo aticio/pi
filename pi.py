@@ -272,8 +272,6 @@ def enter_long(brick):
 
     logging.info(f"Quote balance: {balance} {QUOTE}")
 
-    share = (balance * POSITION_RISK) / (BRICK_SIZE * 2)
-
     order_response = spot_order_quote(
         SYMBOL,
         "BUY",
@@ -318,7 +316,7 @@ def enter_short(brick):
 
     time.sleep(1)
 
-    share = balance * brick["close"]
+    share = balance / brick["close"]
     share = algoutils.truncate_floor(share, STEP_SIZE)
     logging.info(f"Calculated share: {share} {BASE}")
 
@@ -357,7 +355,6 @@ def enter_short(brick):
     logging.info(json.dumps(margin_order_response, sort_keys=True, indent=4))
 
     POS = -1
-
     IN_ORDER = False
 
 
